@@ -1,0 +1,40 @@
+### Browse Books
+GET http://localhost:4004/odata/v4/catalog/Books
+
+###
+#Browse Book by ID
+GET http://localhost:4004/odata/v4/catalog/Books(550e8400-e29b-41d4-a716-446655440001) 
+
+### Insert a new Book
+POST http://localhost:4004/odata/v4/catalog/Books
+Content-Type: application/json
+
+{
+    "title":"ram 1",
+    "author":"john",
+    "price":1222,
+    "stock":10
+}
+
+### Update a Book
+PATCH http://localhost:4004/odata/v4/catalog/Books(8e5935be-96cd-4e4d-83c4-7322630ec45f)
+Content-Type: application/json
+
+{
+  "title": " 1",
+  "author": "john",
+  "price": 1222,
+  "stock": 10
+}
+
+###Delete a Book
+DELETE http://localhost:4004/odata/v4/catalog/Books(8e5935be-96cd-4e4d-83c4-7322630ec45f)
+
+### Send Request
+### Read Invoice Number
+GET http://localhost:4004/odata/v4/Catalog/readInvoiceNumber(salesOrderID='2')
+
+
+
+
+

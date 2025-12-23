@@ -1,0 +1,16 @@
+{
+  "xsappname": "sap_deploy",
+  "tenant-mode": "dedicated",
+  "scopes": [],
+  "attributes": [],
+  "role-templates": [],
+  "oauth2-configuration": {
+    "redirectUris": [
+      "http://localhost:4004/**",
+      "https://*.trial.applicationstudio.cloud.sap/**",
+      "https://*.cfapps.us10-001.hana.ondemand.com/**",
+      "https://*.cf.us10-001.hana.ondemand.com"
+
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+_schema-version: 3.3.0
+ID: sap_cap-db
+description: A simple CAP project
+version: 1.0.0
+
+modules:
+  - name: sap_cap-db-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: sap_cap-db-auth
+      - name: sap_cap-db-db
+      - name: sap_cap-db-destination
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      instances: 1
+    build-parameters:
+      builder: npm-ci
+
+  - name: sap_cap-db-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: sap_cap-db-db
+
+  - name: sap_cap-db-approuter
+    type: approuter.nodejs
+    path: app/router
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          name: srv-api
+          url: ~{srv-url}
+      - name: sap_cap-db-auth
+      - name: sap_cap-db-destination
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+      keep-existing-routes: true
+
+resources:
+  - name: sap_cap-db-auth
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: app-api
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: sap_cap-db-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          redirect-urls:
+            - https://*~{app-api/app-uri}/**
+
+  - name: sap_cap-db-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  - name: sap_cap-db-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: ui5
+                Type: HTTP
+                ProxyType: Internet
+                Authentication: NoAuthentication
+                URL: https://ui5.sap.com
+
+parameters:
+  enable-parallel-deployments: true
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

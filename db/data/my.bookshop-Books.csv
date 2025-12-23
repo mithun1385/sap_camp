@@ -1,0 +1,4 @@
+ID;title;author;price;stock;location;genre
+550e8400-e29b-41d4-a716-446655440000;CAP Test Book;SAP;6000;700;Madurai;Nano
+550e8400-e29b-41d4-a716-446655440001;Learning SAP CAP;John Doe;4500;120;Chennai;Technology
+550e8400-e29b-41d4-a716-446655440002;UI5 for Beginners;Jane Smith;3200;200;Bangalore;Programming
