@@ -20,12 +20,12 @@ Content-Type: application/json
 PATCH http://localhost:4004/odata/v4/catalog/Books(8e5935be-96cd-4e4d-83c4-7322630ec45f)
 Content-Type: application/json
 
-# {
-#   "title": " 1",
-#   "author": "john",
-#   "price": 1222,
-#   "stock": 10
-# }
+{
+  "title": " 1",
+  "author": "john",
+  "price": 1222,
+  "stock": 10
+}
 
 ###Delete a Book
 DELETE http://localhost:4004/odata/v4/catalog/Books(8e5935be-96cd-4e4d-83c4-7322630ec45f)
